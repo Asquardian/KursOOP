@@ -15,7 +15,9 @@ team fight(sf::RenderWindow &window) {
 		savedTeam >> minPowerSet[i];
 	}
 	team Player(healthSet, spiritSet, powerSet, minPowerSet);
+	Player.setTeam();
 	while (window.isOpen()) {
 		return Player;
 	}
+	return Player;
 }
