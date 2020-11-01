@@ -15,9 +15,22 @@ team fight(sf::RenderWindow &window) {
 		savedTeam >> minPowerSet[i];
 	}
 	team Player(healthSet, spiritSet, powerSet, minPowerSet);
-	Player.setTeam();
+	sf::Sprite Background;
+	sf::Texture BackgroundTexture;
+	BackgroundTexture.loadFromFile("Asset/Background.png");
+	Background.setTexture(BackgroundTexture);
 	while (window.isOpen()) {
-		return Player;
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.draw(Background);
+		Player.draw(window);
+		window.display();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			return Player;
 	}
 	return Player;
 }
