@@ -3,22 +3,31 @@
 #include "head.h"
 
 team fight(sf::RenderWindow &window) {
-	int healthSet[2], spiritSet[2], powerSet[2], minPowerSet[2];
+	int healthSet[3], spiritSet[3], powerSet[3], minPowerSet[3], healthEnemy[3], powerEnemy[3], minPowerEnemy[3];
 	std::ifstream savedTeam("Save/TeamStat.save");
 	if (!savedTeam) {
 		exit(0);
 	}
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i <= 2; i++) {
 		savedTeam >> healthSet[i];
+		healthEnemy[i] = rand()%healthSet[i];
 		savedTeam >> spiritSet[i];
 		savedTeam >> powerSet[i];
+		powerEnemy[i] = rand() % powerSet[i];
 		savedTeam >> minPowerSet[i];
+		minPowerEnemy[i] = rand() % minPowerSet[i];
 	}
 	team Player(healthSet, spiritSet, powerSet, minPowerSet);
+	enemy Shadow(healthEnemy, powerEnemy, minPowerEnemy);
 	sf::Sprite Background;
 	sf::Texture BackgroundTexture;
 	BackgroundTexture.loadFromFile("Asset/Background.png");
 	Background.setTexture(BackgroundTexture);
+	Player.setFont();
+	sf::Text turn("Your turn!", Player.font, 20);
+	turn.setPosition(200, 200);
+	bool playersStep = true;
+	int characterNum;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -27,7 +36,28 @@ team fight(sf::RenderWindow &window) {
 				window.close();
 		}
 		window.draw(Background);
+		if (playersStep == true) {
+			characterNum = Player.onMouse(window);
+			switch (characterNum) {
+			case 0:
+				Player.skillPower(0);
+				playersStep = false;
+				break;
+			case 1:
+				Player.skillPower(1);
+				playersStep = false;
+				break;
+			case 2:
+				Player.skillPower(2);
+				playersStep = false;
+				break;
+			default:
+				window.draw(turn);
+			}
+		}
 		Player.draw(window);
+		Player.stat(window);
+		Shadow.draw(window);
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			return Player;
