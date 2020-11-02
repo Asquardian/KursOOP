@@ -20,6 +20,7 @@ private:
 	int inventory[10]{};
 	int spirit[3]{};
 public:	
+	bool step;
 	sf::Font font;
 	sf::Text hp[3]{}, sp[3]{};
 	team(int* healthSet, int* spiritSet, int* powerSet, int* minPowerSet) {		
@@ -64,6 +65,7 @@ public:
 	int chooseSkill(int characterNum, sf::RenderWindow &window) {
 		int skill, characterEffect;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && spirit[characterNum] - 10 > 0) {
+			step = false;
 			return skillPower(characterNum);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && spirit[characterNum] - 5 > 0) {
@@ -71,18 +73,21 @@ public:
 			case 0:
 				spirit[characterNum] -= 5;
 				power[characterNum] += 10;
+				step = false;
 				return 1;
 				break;
 			case 1:
 				spirit[characterNum] -= 5;
 				characterEffect = onMouse(window);
 				health[characterEffect] += 20;
+				step = false;
 				return 1;
 				break;
 			case 2:
 				health[characterNum] -= 100;
 				spirit[characterNum] -= 5;
 				power[characterNum] += 100;
+				step = false;
 				return 1;
 				break;
 			default:
