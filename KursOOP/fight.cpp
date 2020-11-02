@@ -28,6 +28,7 @@ team fight(sf::RenderWindow &window) {
 	turn.setPosition(200, 200);
 	bool playersStep = true;
 	int characterNum;
+	int skill = 0;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -38,22 +39,9 @@ team fight(sf::RenderWindow &window) {
 		window.draw(Background);
 		if (playersStep == true) {
 			characterNum = Player.onMouse(window);
-			switch (characterNum) {
-			case 0:
-				Player.skillPower(0);
-				playersStep = false;
-				break;
-			case 1:
-				Player.skillPower(1);
-				playersStep = false;
-				break;
-			case 2:
-				Player.skillPower(2);
-				playersStep = false;
-				break;
-			default:
-				window.draw(turn);
-			}
+			skill = Player.chooseSkill(characterNum, window);
+			Shadow.health[0] -= skill;
+			window.draw(turn);
 		}
 		Player.draw(window);
 		Player.stat(window);

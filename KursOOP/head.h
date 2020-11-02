@@ -46,21 +46,6 @@ public:
 		spirit[characterNum] = spirit[characterNum] - 10;
 		return skill;
 	}
-	void setFont() {
-		font.loadFromFile("Asset/FontC.TTF");
-		hp[0].setPosition(190, 370);
-		hp[1].setPosition(230, 462);
-		hp[2].setPosition(190, 598);
-		sp[0].setPosition(190, 348);
-		sp[1].setPosition(230, 440);
-		sp[2].setPosition(190, 576);
-		for (int i = 0; i < 3; i++) {
-			hp[i].setFont(font);
-			sp[i].setFont(font);
-			hp[i].setCharacterSize(20);
-			sp[i].setCharacterSize(20);
-		}
-	}
 	int onMouse(sf::RenderWindow& window) {
 		if (sf::IntRect(200, 372, 100, 100).contains(sf::Mouse::getPosition(window))) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -75,6 +60,51 @@ public:
 				return 2;
 		}
 		return 3;
+	}
+	int chooseSkill(int characterNum, sf::RenderWindow &window) {
+		int skill, characterEffect;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && spirit[characterNum] - 10 > 0) {
+			return skillPower(characterNum);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && spirit[characterNum] - 5 > 0) {
+			switch (characterNum) {
+			case 0:
+				spirit[characterNum] -= 5;
+				power[characterNum] += 10;
+				return 1;
+				break;
+			case 1:
+				spirit[characterNum] -= 5;
+				characterEffect = onMouse(window);
+				health[characterEffect] += 20;
+				return 1;
+				break;
+			case 2:
+				health[characterNum] -= 100;
+				spirit[characterNum] -= 5;
+				power[characterNum] += 100;
+				return 1;
+				break;
+			default:
+				return 0;
+			}
+		}
+		return 0;
+	}
+	void setFont() {
+		font.loadFromFile("Asset/FontC.TTF");
+		hp[0].setPosition(190, 370);
+		hp[1].setPosition(230, 462);
+		hp[2].setPosition(190, 598);
+		sp[0].setPosition(190, 348);
+		sp[1].setPosition(230, 440);
+		sp[2].setPosition(190, 576);
+		for (int i = 0; i < 3; i++) {
+			hp[i].setFont(font);
+			sp[i].setFont(font);
+			hp[i].setCharacterSize(20);
+			sp[i].setCharacterSize(20);
+		}
 	}
 	void stat(sf::RenderWindow &window) {
 		std::ostringstream hpString[3], spString[3];
