@@ -35,7 +35,7 @@ team fight(sf::RenderWindow &window) {
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
 	Player.step = true;
-	int characterNum = 3;
+	int characterNum = 3, enemyChoose = 3;
 	int skill = 0;
 	while (window.isOpen()) {
 		sf::Event event;
@@ -46,10 +46,16 @@ team fight(sf::RenderWindow &window) {
 		}
 		window.draw(Background);
 		if (Player.step == true) {
-			if (characterNum == 3)
+			if (characterNum == 3) {
 				characterNum = Player.onMouse(window);
-			skill = Player.chooseSkill(characterNum, window);
-			Shadow.health[0] -= skill;
+			}
+			if (enemyChoose == 3) {
+				enemyChoose = Shadow.onMouse(window);
+			}
+			if (enemyChoose != 3 && characterNum != 3) {
+				skill = Player.chooseSkill(characterNum, window);
+				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
+			}
 			window.draw(turn);
 		}
 		Player.draw(window);

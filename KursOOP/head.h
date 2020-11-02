@@ -64,7 +64,7 @@ public:
 		return 3;
 	}
 	int chooseSkill(int characterNum, sf::RenderWindow &window) {
-		int skill, characterEffect;
+		int characterEffect;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && spirit[characterNum] - 10 > 0) {
 			step = false;
 			return skillPower(characterNum);
@@ -134,13 +134,12 @@ private:
 	sf::Text hp[3]{};
 public:
 	enemy(int* healthSet, int* powerSet, int* minPowerSet) {
-		character.loadFromFile("Asset/Char.png");
+		character.loadFromFile("Asset/Shadow.png");
 		teamCharacter[0].setPosition(1100, 372);
 		teamCharacter[1].setPosition(1060, 464);
 		teamCharacter[2].setPosition(1100, 600);
 		for (int i = 0; i < 3; i++) {
 			teamCharacter[i].setTexture(character);
-			teamCharacter[i].setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
 		}
 		for (int i = 0; i < 3; i++) {
 			health[i] = healthSet[i];
@@ -148,11 +147,26 @@ public:
 			minPower[i] = minPowerSet[i];
 		}
 	}
+	int onMouse(sf::RenderWindow& window) {
+		if (sf::IntRect(1100, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 0;
+		}
+		if (sf::IntRect(1060, 464, 100, 100).contains(sf::Mouse::getPosition(window)) && health[1] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 1;
+		}
+		if (sf::IntRect(1100, 600, 100, 100).contains(sf::Mouse::getPosition(window)) && health[2] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 2;
+		}
+		return 3;
+	}
 	void setFont() {
 		font.loadFromFile("Asset/FontC.TTF");
-		hp[0].setPosition(1080, 370);
-		hp[1].setPosition(1040, 462);
-		hp[2].setPosition(1080, 598);
+		hp[0].setPosition(1200, 370);
+		hp[1].setPosition(1160, 462);
+		hp[2].setPosition(1200, 598);
 		for (int i = 0; i < 3; i++) {
 			hp[i].setFont(font);
 			hp[i].setCharacterSize(20);
