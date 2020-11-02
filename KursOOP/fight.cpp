@@ -2,7 +2,7 @@
 #include <fstream>
 #include "head.h"
 
-team fight(sf::RenderWindow &window) {
+int fight(sf::RenderWindow &window) {
 	int healthSet[3], spiritSet[3], powerSet[3], minPowerSet[3], healthEnemy[3], powerEnemy[3], minPowerEnemy[3];
 	std::ifstream savedTeam("Save/TeamStat.save");
 	srand(time(NULL));
@@ -34,9 +34,13 @@ team fight(sf::RenderWindow &window) {
 	Shadow.setFont();
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
+	sf::Text win("You win!", Player.font, 40);
+	win.setPosition(683, 384);
+	sf::Text lose("You lose!", Player.font, 40);
+	win.setPosition(683, 384);
 	Player.step = true;
-	int characterNum = 3, enemyChoose = 3;
-	int skill = 0;
+	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
+	int skill = 0, wait;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -58,13 +62,37 @@ team fight(sf::RenderWindow &window) {
 			}
 			window.draw(turn);
 		}
+		else {
+			if (enemyToAttack > 2)
+				enemyToAttack = 0;	
+			int i = 0;		
+			while (Shadow.health[enemyToAttack] < 0) {
+				enemyToAttack++;
+				if (enemyToAttack > 2)
+					enemyToAttack = 0;
+			}
+			charAttack = Shadow.AI(Player.health, enemyToAttack);
+			if (charAttack != 5) {
+				Player.health[charAttack] = Player.health[charAttack] - 40;
+			}
+			enemyToAttack++;
+			characterNum = 3;
+			enemyChoose = 3;
+			Player.step = true;
+		}
 		Player.draw(window);
 		Player.stat(window);
 		Shadow.draw(window);
 		Shadow.stat(window);
+		if (Player.alive() == false) {
+			return 10;
+		}
+		if (Shadow.alive() == false) {
+			return rand() % 8;
+		}
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			return Player;
+			return 11;
 	}
-	return Player;
+	return 10;
 }
