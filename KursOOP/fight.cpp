@@ -24,6 +24,7 @@ team fight(sf::RenderWindow &window) {
 	BackgroundTexture.loadFromFile("Asset/Background.png");
 	Background.setTexture(BackgroundTexture);
 	Player.setFont();
+	Shadow.setFont();
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
 	Player.step = true;
@@ -47,6 +48,7 @@ team fight(sf::RenderWindow &window) {
 		Player.draw(window);
 		Player.stat(window);
 		Shadow.draw(window);
+		Shadow.stat(window);
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			return Player;

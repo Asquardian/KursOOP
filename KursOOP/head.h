@@ -5,12 +5,14 @@
 
 class obj {
 public:
+	sf::Font font;
 	int health[3]{};
 	int power[3]{};
 	int minPower[3]{};
 	void draw(sf::RenderWindow& window) {
 		for (int i = 0; i < 3; i++)
-			window.draw(teamCharacter[i]);
+			if (health[i] > 0)
+				window.draw(teamCharacter[i]);
 	}
 	sf::Sprite teamCharacter[3];
 	sf::Texture character;
@@ -21,7 +23,6 @@ private:
 	int spirit[3]{};
 public:	
 	bool step;
-	sf::Font font;
 	sf::Text hp[3]{}, sp[3]{};
 	team(int* healthSet, int* spiritSet, int* powerSet, int* minPowerSet) {		
 		character.loadFromFile("Asset/Char.png");
@@ -48,15 +49,15 @@ public:
 		return skill;
 	}
 	int onMouse(sf::RenderWindow& window) {
-		if (sf::IntRect(200, 372, 100, 100).contains(sf::Mouse::getPosition(window))) {
+		if (sf::IntRect(200, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				return 0;
 		}
-		if (sf::IntRect(240, 462, 100, 100).contains(sf::Mouse::getPosition(window))) {
+		if (sf::IntRect(240, 462, 100, 100).contains(sf::Mouse::getPosition(window)) && health[1] > 0) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				return 1;
 		}
-		if (sf::IntRect(200, 600, 100, 100).contains(sf::Mouse::getPosition(window))) {
+		if (sf::IntRect(200, 600, 100, 100).contains(sf::Mouse::getPosition(window)) && health[2] > 0) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				return 2;
 		}
@@ -118,15 +119,19 @@ public:
 			spString[i] << spirit[i];
 		}
 		for (int i = 0; i < 3; i++) {
-			hp[i].setString(hpString[i].str());
-			sp[i].setString(spString[i].str());
-			window.draw(hp[i]);
-			window.draw(sp[i]);
+			if (health[i] > 0) {
+				hp[i].setString(hpString[i].str());
+				sp[i].setString(spString[i].str());
+				window.draw(hp[i]);
+				window.draw(sp[i]);
+			}
 		}
 	}
 };
 
 class enemy : public obj {
+private:
+	sf::Text hp[3]{};
 public:
 	enemy(int* healthSet, int* powerSet, int* minPowerSet) {
 		character.loadFromFile("Asset/Char.png");
@@ -141,6 +146,28 @@ public:
 			health[i] = healthSet[i];
 			power[i] = powerSet[i];
 			minPower[i] = minPowerSet[i];
+		}
+	}
+	void setFont() {
+		font.loadFromFile("Asset/FontC.TTF");
+		hp[0].setPosition(1080, 370);
+		hp[1].setPosition(1040, 462);
+		hp[2].setPosition(1080, 598);
+		for (int i = 0; i < 3; i++) {
+			hp[i].setFont(font);
+			hp[i].setCharacterSize(20);
+		}
+	}
+	void stat(sf::RenderWindow& window) {
+		std::ostringstream hpString[3];
+		for (int i = 0; i < 3; i++) {
+			hpString[i] << health[i];
+		}
+		for (int i = 0; i < 3; i++) {
+			if (health[i] > 0) {
+				hp[i].setString(hpString[i].str());
+				window.draw(hp[i]);
+			}
 		}
 	}
 };
