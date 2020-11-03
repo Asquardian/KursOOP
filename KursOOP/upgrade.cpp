@@ -6,6 +6,9 @@ void upgradeMenu(sf::RenderWindow& window) {
 	inventory PlayersInventory;
 	sf::Sprite Background;
 	sf::Texture BackTexture;
+	Button itemLife(520, 200, 340, 20);
+	Button itemPower(520, 178, 340, 20);
+	Button itemSpirit(520, 156, 340, 20);
 	BackTexture.loadFromFile("Asset/Upgrade.png");
 	Background.setTexture(BackTexture);
 	while (window.isOpen()) {
@@ -15,6 +18,8 @@ void upgradeMenu(sf::RenderWindow& window) {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		if (itemLife.click(window) == true)
+			exit(0);
 		window.draw(Background);
 		PlayersInventory.show(window);
 		window.display();

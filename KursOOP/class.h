@@ -244,6 +244,25 @@ public:
 		}
 	}
 };
+class Button {
+private:
+	sf::Text buttonText;
+public:
+	int posX, posY, endX, endY;
+	Button(int x, int y, int xend, int yend) {
+		posX = x;
+		posY = y;
+		endX = xend;
+		endY = yend;
+	};
+	bool click(sf::RenderWindow& window) {
+		if (sf::IntRect(posX, posY, endX, endY).contains(sf::Mouse::getPosition(window))) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return true;
+		}
+			return false;
+	}
+};
 class inventory {
 public:
 	int id[3]{};
