@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 class obj {
 public:
@@ -37,7 +38,15 @@ private:
 public:	
 	bool step;
 	sf::Text hp[3]{}, sp[3]{};
-	team(int* healthSet, int* spiritSet, int* powerSet, int* minPowerSet) {		
+	team() {	
+		std::ifstream savedTeam("Save/TeamStat.save");
+		for (int i = 0; i <= 2; i++) {
+			savedTeam >> health[i];
+			savedTeam >> spirit[i];
+			savedTeam >> power[i];
+			savedTeam >> minPower[i];
+		}
+		savedTeam.close();
 		buffTexture.loadFromFile("Asset/Effect.png");
 		for (int i = 0; i < 3; i++) {
 			buff[i].setTexture(buffTexture);
@@ -55,12 +64,6 @@ public:
 		for (int i = 0; i < 3; i++) {
 			teamCharacter[i].setTexture(character);
 			teamCharacter[i].setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
-		}
-		for (int i = 0; i < 3; i++) {
-			health[i] = healthSet[i];
-			spirit[i] = spiritSet[i];
-			power[i] = powerSet[i];
-			minPower[i] = minPowerSet[i];
 		}
 	}
 	void drawBuff(sf::RenderWindow &window) {
@@ -238,6 +241,15 @@ public:
 				hp[i].setString("HP: "+ hpString[i].str());
 				window.draw(hp[i]);
 			}
+		}
+	}
+};
+class item {
+public:
+	int id[9]{};
+	item() {
+		for (int i = 0; i < 9; i++) {
+			std::cout << "x";
 		}
 	}
 };

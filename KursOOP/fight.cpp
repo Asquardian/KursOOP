@@ -3,22 +3,10 @@
 #include "class.h"
 
 int fight(sf::RenderWindow &window) {
-	int healthSet[3], spiritSet[3], powerSet[3], minPowerSet[3], healthEnemy[3];
-	std::ifstream savedTeam("Save/TeamStat.save");
-	srand(time(NULL));
-	if (!savedTeam) {
-		exit(0);
-	}
-	for (int i = 0; i <= 2; i++) {
-		savedTeam >> healthSet[i];
-		healthEnemy[i] = rand()%healthSet[i];
-		if (healthEnemy[i] < 60)
-			healthEnemy[i] = 60;
-		savedTeam >> spiritSet[i];
-		savedTeam >> powerSet[i];
-		savedTeam >> minPowerSet[i];
-	}
-	team Player(healthSet, spiritSet, powerSet, minPowerSet);
+	int healthEnemy[3];
+	team Player;
+	for (int i = 0; i < 3; i++)
+		healthEnemy[i] = Player.health[i];
 	enemy Shadow(healthEnemy);
 	sf::Sprite Background;
 	sf::Texture BackgroundTexture;
