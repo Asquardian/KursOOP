@@ -244,12 +244,34 @@ public:
 		}
 	}
 };
-class item {
+class inventory {
 public:
-	int id[9]{};
-	item() {
-		for (int i = 0; i < 9; i++) {
-			std::cout << "x";
+	int id[3]{};
+	std::string nameId[3]{};
+	sf::Text item[3]{};
+	sf::Font font;
+	inventory() {
+		std::ifstream savedInventory("Save/inventory.save");
+		font.loadFromFile("Asset/FontC.TTF");
+		for (int i = 0; i < 3; i++) {
+			savedInventory >> id[i];
+			item[i].setFont(font);
+			item[i].setCharacterSize(20);
 		}
+		for (int i = 0; i < 3; i++)
+			id[i]--;
+		nameId[0] = "Life";
+		nameId[1] = "Power";
+		nameId[2] = "Spirit";
+		int x = 520, y = 200;
+		for (int i = 0; i < 3; i++) {
+			item[i].setPosition(x, y);
+			item[i].setString("Essension of " + nameId[i]);
+			y -= 22;
+		}
+	}
+	void show(sf::RenderWindow& window) {
+		for(int i = 0; i < 3; i++)
+			window.draw(item[i]);
 	}
 };

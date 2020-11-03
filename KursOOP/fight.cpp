@@ -22,7 +22,7 @@ int fight(sf::RenderWindow &window) {
 	win.setPosition(683, 384);
 	Player.step = true;
 	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
-	int skill = 0, wait;
+	int skill = 0;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
