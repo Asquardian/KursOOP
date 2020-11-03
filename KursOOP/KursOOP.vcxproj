@@ -130,7 +130,8 @@
     <ClCompile Include="fight.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="head.h" />
+    <ClInclude Include="class.h" />
+    <ClInclude Include="function.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

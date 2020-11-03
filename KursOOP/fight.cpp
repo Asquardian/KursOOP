@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include "head.h"
+#include "class.h"
 
 int fight(sf::RenderWindow &window) {
-	int healthSet[3], spiritSet[3], powerSet[3], minPowerSet[3], healthEnemy[3], powerEnemy[3], minPowerEnemy[3];
+	int healthSet[3], spiritSet[3], powerSet[3], minPowerSet[3], healthEnemy[3];
 	std::ifstream savedTeam("Save/TeamStat.save");
 	srand(time(NULL));
 	if (!savedTeam) {
@@ -16,16 +16,10 @@ int fight(sf::RenderWindow &window) {
 			healthEnemy[i] = 60;
 		savedTeam >> spiritSet[i];
 		savedTeam >> powerSet[i];
-		powerEnemy[i] = rand() % powerSet[i];
-		if (powerEnemy[i] < 50)
-			powerEnemy[i] = 50;
 		savedTeam >> minPowerSet[i];
-		minPowerEnemy[i] = rand() % minPowerSet[i];
-		if (minPowerEnemy[i] < 30)
-			minPowerEnemy[i] = 30;
 	}
 	team Player(healthSet, spiritSet, powerSet, minPowerSet);
-	enemy Shadow(healthEnemy, powerEnemy, minPowerEnemy);
+	enemy Shadow(healthEnemy);
 	sf::Sprite Background;
 	sf::Texture BackgroundTexture;
 	BackgroundTexture.loadFromFile("Asset/Background.png");
@@ -63,9 +57,6 @@ int fight(sf::RenderWindow &window) {
 			window.draw(turn);
 		}
 		else {
-			if (enemyToAttack > 2)
-				enemyToAttack = 0;	
-			int i = 0;		
 			while (Shadow.health[enemyToAttack] < 0) {
 				enemyToAttack++;
 				if (enemyToAttack > 2)
@@ -82,6 +73,7 @@ int fight(sf::RenderWindow &window) {
 		}
 		Player.draw(window);
 		Player.stat(window);
+		Player.drawBuff(window);
 		Shadow.draw(window);
 		Shadow.stat(window);
 		if (Player.alive() == false) {
