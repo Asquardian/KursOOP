@@ -47,7 +47,7 @@ int fight(sf::RenderWindow &window) {
 			}
 			window.draw(turn);
 		}
-		if (Player.step == false && Player.animPlay == false && Shadow.animPlay == false) {
+		if (Player.step == false && Player.animPlay == false && Shadow.animPlay == false && Shadow.alive() == true) {
 			Shadow.playGetDamage(enemyChoose);
 			Player.playIdle();
 			while (Shadow.health[enemyToAttack] < 0) {
@@ -81,10 +81,10 @@ int fight(sf::RenderWindow &window) {
 			return 10;
 		}
 		if (Shadow.alive() == false) {
-			return rand() % 8;
+			return rand() % 3;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			return 11;
+			return 10;
 	}
 	return 10;
 }

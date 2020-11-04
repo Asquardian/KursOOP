@@ -29,14 +29,13 @@ public:
 };
 class team : public obj{
 private:
-	int power[3]{};
-	int minPower[3]{};
 	sf::Sprite buff[3]{};
 	sf::Texture buffTexture;
 	int isBuffed[3]{};
-	int inventory[10]{};
-	int spirit[3]{};
 public:
+	int power[3]{};
+	int minPower[3]{};
+	int spirit[3]{};
 	bool step;
 	sf::Text hp[3]{}, sp[3]{};
 	team() {	
@@ -278,6 +277,7 @@ public:
 class Button {
 private:
 	sf::Text buttonText;
+	sf::Font font;
 public:
 	int posX, posY, endX, endY;
 	Button(int x, int y, int xend, int yend) {
@@ -286,6 +286,20 @@ public:
 		endX = xend;
 		endY = yend;
 	};
+	Button(int x, int y, int xend, int yend, std::string text) {
+		posX = x;
+		posY = y;
+		endX = xend;
+		endY = yend;
+		font.loadFromFile("Asset/FontC.ttf");
+		buttonText.setString(text);
+		buttonText.setPosition(x, y);
+		buttonText.setFont(font);
+		buttonText.setCharacterSize(20);
+	};
+	void draw(sf::RenderWindow& window) {
+		window.draw(buttonText);
+	}
 	bool click(sf::RenderWindow& window) {
 		if (sf::IntRect(posX, posY, endX, endY).contains(sf::Mouse::getPosition(window))) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -295,11 +309,13 @@ public:
 	}
 };
 class inventory {
-public:
-	int id[3]{};
+private:
+	int x, y;
 	std::string nameId[3]{};
 	sf::Text item[3]{};
 	sf::Font font;
+public:
+	int id[3]{};
 	inventory() {
 		std::ifstream savedInventory("Save/inventory.save");
 		font.loadFromFile("Asset/FontC.TTF");
@@ -308,15 +324,31 @@ public:
 			item[i].setFont(font);
 			item[i].setCharacterSize(20);
 		}
-		for (int i = 0; i < 3; i++)
-			id[i]--;
 		nameId[0] = "Life";
 		nameId[1] = "Power";
 		nameId[2] = "Spirit";
-		int x = 520, y = 200;
+		x = 520, y = 200;
+	}
+	void get(int num) {
+		id[num] = id[num] + 1;
+		std::ofstream inv("Save/inventory.save");
 		for (int i = 0; i < 3; i++) {
+			inv << id[i] << " ";
+		}
+		inv.close();
+	}
+	void set() {
+		for (int i = 0; i < 3; i++) {
+			std::ostringstream idStr[3];
+			for (int i = 0; i < 3; i++) {
+				idStr[i] << id[i];
+			}
+			item[i].setString("Essension of " + nameId[i] + ": " + idStr[i].str());
+		}
+	}
+	void setPosition() {
+		for (int i = 0; i < 3; i++){
 			item[i].setPosition(x, y);
-			item[i].setString("Essension of " + nameId[i]);
 			y -= 22;
 		}
 	}
