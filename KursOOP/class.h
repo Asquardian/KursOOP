@@ -152,6 +152,13 @@ public:
 			sp[i].setCharacterSize(20);
 		}
 	}
+	void playPrepareToAttack(int charNum) {
+		teamCharacter[charNum].setTextureRect(sf::IntRect(charNum * 100, 100, 100, 100));
+	}
+	void playIdle() {
+		for (int i = 0; i < 3; i++)
+			teamCharacter[i].setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
+	}
 	void stat(sf::RenderWindow &window) {
 		std::ostringstream hpString[3], spString[3];
 		for (int i = 0; i < 3; i++) {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <SFML/Audio.hpp>
 #include "class.h"
 
 int fight(sf::RenderWindow &window) {
@@ -8,6 +9,10 @@ int fight(sf::RenderWindow &window) {
 	for (int i = 0; i < 3; i++)
 		healthEnemy[i] = Player.health[i];
 	enemy Shadow(healthEnemy);
+	sf::Music battleTheme;
+	battleTheme.openFromFile("Asset/MassDestruction.ogg");
+	battleTheme.setLoop(true);
+	battleTheme.play();
 	sf::Sprite Background;
 	sf::Texture BackgroundTexture;
 	BackgroundTexture.loadFromFile("Asset/Background.png");
@@ -16,10 +21,6 @@ int fight(sf::RenderWindow &window) {
 	Shadow.setFont();
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
-	sf::Text win("You win!", Player.font, 40);
-	win.setPosition(683, 384);
-	sf::Text lose("You lose!", Player.font, 40);
-	win.setPosition(683, 384);
 	Player.step = true;
 	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
 	int skill = 0;
@@ -39,12 +40,14 @@ int fight(sf::RenderWindow &window) {
 				enemyChoose = Shadow.onMouse(window);
 			}
 			if (enemyChoose != 3 && characterNum != 3) {
+				Player.playPrepareToAttack(characterNum);
 				skill = Player.chooseSkill(characterNum, window);
 				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
 			}
 			window.draw(turn);
 		}
 		else {
+			Player.playIdle();
 			while (Shadow.health[enemyToAttack] < 0) {
 				enemyToAttack++;
 				if (enemyToAttack > 2)
