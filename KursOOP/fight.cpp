@@ -54,7 +54,8 @@ int fight(sf::RenderWindow &window) {
 			window.draw(turn);
 		}
 		if (Player.step == false && Player.animPlay == false && Shadow.animPlay == false && Shadow.alive() == true) {
-			Shadow.playGetDamage(enemyChoose);
+			if (skill > 0)
+				Shadow.playGetDamage(enemyChoose);
 			Player.playIdle();
 			while (Shadow.health[enemyToAttack] < 0) {
 				enemyToAttack++;
