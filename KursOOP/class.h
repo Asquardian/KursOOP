@@ -8,7 +8,7 @@ class obj {
 public:
 	sf::Font font;
 	int health[3]{};
-	bool animPlay;
+	bool animPlay = NULL;
 	void draw(sf::RenderWindow& window) {
 		for (int i = 0; i < 3; i++)
 			if (health[i] >= 0)
@@ -36,8 +36,8 @@ public:
 	int power[3]{};
 	int minPower[3]{};
 	int spirit[3]{};
-	bool step;
-	sf::Text hp[3]{}, sp[3]{};
+	bool step = NULL;
+	sf::Text hp[3]{}, sp[3]{}, pw[3]{}, minpw[3]{};
 	team() {	
 		std::ifstream savedTeam("Save/TeamStat.save");
 		for (int i = 0; i <= 2; i++) {
@@ -147,11 +147,21 @@ public:
 		sp[0].setPosition(150, 348);
 		sp[1].setPosition(190, 440);
 		sp[2].setPosition(150, 576);
+		pw[0].setPosition(150, 392);
+		pw[1].setPosition(190, 484);
+		pw[2].setPosition(150, 620);
+		minpw[0].setPosition(150, 414);
+		minpw[1].setPosition(190, 506);
+		minpw[2].setPosition(150, 642);
 		for (int i = 0; i < 3; i++) {
 			hp[i].setFont(font);
 			sp[i].setFont(font);
+			pw[i].setFont(font);
+			minpw[i].setFont(font);
 			hp[i].setCharacterSize(20);
 			sp[i].setCharacterSize(20);
+			pw[i].setCharacterSize(20);
+			minpw[i].setCharacterSize(20);
 		}
 	}
 	void playPrepareToAttack(int charNum) {
@@ -178,6 +188,22 @@ public:
 				sp[i].setString("SP: " + spString[i].str());
 				window.draw(hp[i]);
 				window.draw(sp[i]);
+			}
+		}
+	}
+	void fullStat(sf::RenderWindow& window){
+		stat(window);
+		std::ostringstream pwString[3], minpwString[3];
+		for (int i = 0; i < 3; i++) {
+			pwString[i] << power[i];
+			minpwString[i] << minPower[i];
+		}
+		for (int i = 0; i < 3; i++) {
+			if (health[i] > 0) {
+				pw[i].setString("PW: " + pwString[i].str());
+				minpw[i].setString("MP: " + minpwString[i].str());
+				window.draw(pw[i]);
+				window.draw(minpw[i]);
 			}
 		}
 	}
@@ -279,14 +305,14 @@ private:
 	sf::Text buttonText;
 	sf::Font font;
 public:
-	int posX, posY, endX, endY;
-	Button(int x, int y, int xend, int yend) {
+	float posX, posY, endX, endY;
+	Button(float x, float y, float xend, float yend) {
 		posX = x;
 		posY = y;
 		endX = xend;
 		endY = yend;
 	};
-	Button(int x, int y, int xend, int yend, std::string text) {
+	Button(float x, float y, float xend, float yend, std::string text) {
 		posX = x;
 		posY = y;
 		endX = xend;
@@ -310,7 +336,7 @@ public:
 };
 class inventory {
 private:
-	int x, y;
+	float x, y;
 	std::string nameId[3]{};
 	sf::Text item[3]{};
 	sf::Font font;

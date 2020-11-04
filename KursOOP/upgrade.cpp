@@ -15,6 +15,7 @@ int upgradeMenu(sf::RenderWindow& window) {
 	int charNum = 3;
 	PlayersInventory.setPosition();
 	Player.setFont();
+	bool delay = false;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -26,17 +27,24 @@ int upgradeMenu(sf::RenderWindow& window) {
 		window.clear();
 		if (Player.onMouse(window) != 3)
 			charNum = Player.onMouse(window);
-		if (itemLife.click(window) == true && charNum != 3 && PlayersInventory.id[0] > 0) {
+		if (itemLife.click(window) == true && charNum != 3 && PlayersInventory.id[0] > 0 && delay == false) {
 			Player.health[charNum] += 10;
 			PlayersInventory.id[0] -= 1;
+			delay = true;
 		}
-		if (itemPower.click(window) == true && charNum != 3 && PlayersInventory.id[1] > 0) {
+		if (itemPower.click(window) == true && charNum != 3 && PlayersInventory.id[1] > 0 && delay == false) {
 			Player.power[charNum] += 10;
+			Player.minPower[charNum] += 10;
 			PlayersInventory.id[1] -= 1;
+			delay = true;
 		}
-		if (itemSpirit.click(window) == true && charNum != 3 && PlayersInventory.id[2] > 0) {
+		if (itemSpirit.click(window) == true && charNum != 3 && PlayersInventory.id[2] > 0 && delay == false) {
 			Player.spirit[charNum] += 10;
 			PlayersInventory.id[2] -= 1;
+			delay = true;
+		}
+		if (itemSpirit.click(window) == false && itemPower.click(window) == false && itemLife.click(window) == false) {
+			delay = false;
 		}
 		if (Exit.click(window) == true) {
 			std::ofstream team("Save/TeamStat.save");
@@ -53,7 +61,8 @@ int upgradeMenu(sf::RenderWindow& window) {
 		Exit.draw(window);
 		PlayersInventory.show(window);
 		Player.draw(window);
-		Player.stat(window);
+		Player.fullStat(window);
 		window.display();
 	}
+	return 1;
 }
