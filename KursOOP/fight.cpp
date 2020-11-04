@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <SFML/Audio.hpp>
+#include <windows.h>
 #include "class.h"
 
 int fight(sf::RenderWindow &window) {
@@ -21,9 +22,8 @@ int fight(sf::RenderWindow &window) {
 	Shadow.setFont();
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
-	Player.step = true;
 	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
-	int skill = 0;
+	int skill = 0, frame = 0, shadowBefore;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -32,7 +32,7 @@ int fight(sf::RenderWindow &window) {
 				window.close();
 		}
 		window.draw(Background);
-		if (Player.step == true) {
+		if (Player.step == true && Player.animPlay == false && Shadow.animPlay == false) {
 			if (characterNum == 3) {
 				characterNum = Player.onMouse(window);
 			}
@@ -42,18 +42,22 @@ int fight(sf::RenderWindow &window) {
 			if (enemyChoose != 3 && characterNum != 3) {
 				Player.playPrepareToAttack(characterNum);
 				skill = Player.chooseSkill(characterNum, window);
+				shadowBefore = Shadow.health[enemyChoose];
 				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
 			}
 			window.draw(turn);
 		}
-		else {
+		if (Player.step == false && Player.animPlay == false && Shadow.animPlay == false) {
+			Shadow.playGetDamage(enemyChoose);
 			Player.playIdle();
 			while (Shadow.health[enemyToAttack] < 0) {
 				enemyToAttack++;
 				if (enemyToAttack > 2)
 					enemyToAttack = 0;
 			}
+			Shadow.playAttack(enemyToAttack);
 			charAttack = Shadow.AI(Player.health, enemyToAttack);
+			Player.playGetDamage(charAttack);
 			if (charAttack != 5) {
 				Player.health[charAttack] = Player.health[charAttack] - 40;
 			}
@@ -67,13 +71,18 @@ int fight(sf::RenderWindow &window) {
 		Player.drawBuff(window);
 		Shadow.draw(window);
 		Shadow.stat(window);
+		window.display();
+		if (Player.animPlay == true || Shadow.animPlay == true) {
+			Sleep(200);
+			Player.playIdle();
+			Shadow.playIdle();
+		}
 		if (Player.alive() == false) {
 			return 10;
 		}
 		if (Shadow.alive() == false) {
 			return rand() % 8;
 		}
-		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			return 11;
 	}

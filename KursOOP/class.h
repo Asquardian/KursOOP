@@ -8,6 +8,7 @@ class obj {
 public:
 	sf::Font font;
 	int health[3]{};
+	bool animPlay;
 	void draw(sf::RenderWindow& window) {
 		for (int i = 0; i < 3; i++)
 			if (health[i] >= 0)
@@ -35,12 +36,14 @@ private:
 	int isBuffed[3]{};
 	int inventory[10]{};
 	int spirit[3]{};
-public:	
+public:
 	bool step;
 	sf::Text hp[3]{}, sp[3]{};
 	team() {	
 		std::ifstream savedTeam("Save/TeamStat.save");
 		for (int i = 0; i <= 2; i++) {
+			animPlay = false;
+			step = true;
 			savedTeam >> health[i];
 			savedTeam >> spirit[i];
 			savedTeam >> power[i];
@@ -158,6 +161,11 @@ public:
 	void playIdle() {
 		for (int i = 0; i < 3; i++)
 			teamCharacter[i].setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
+		animPlay = false;
+	}
+	void playGetDamage(int charNum) {
+		animPlay = true;
+		teamCharacter[charNum].setTextureRect(sf::IntRect(charNum * 100, 200, 100, 100));
 	}
 	void stat(sf::RenderWindow &window) {
 		std::ostringstream hpString[3], spString[3];
@@ -182,12 +190,14 @@ public:
 	int healTime;
 	enemy(int* healthSet) {
 		character.loadFromFile("Asset/Shadow.png");
+		animPlay = false;
 		healTime = 0;
 		teamCharacter[0].setPosition(1100, 372);
 		teamCharacter[1].setPosition(1060, 464);
 		teamCharacter[2].setPosition(1100, 600);
 		for (int i = 0; i < 3; i++) {
 			teamCharacter[i].setTexture(character);
+			teamCharacter[i].setTextureRect(sf::IntRect(0, 0, 100, 100));
 		}
 		for (int i = 0; i < 3; i++) {
 			health[i] = healthSet[i];
@@ -212,6 +222,20 @@ public:
 			}
 		}
 		return charToAttack;
+	}
+	void playIdle() {
+		for (int i = 0; i < 3; i++) {
+			teamCharacter[i].setTextureRect(sf::IntRect(0, 0, 100, 100));
+		}
+		animPlay = false;
+	}
+	void playAttack(int enemNum) {
+		teamCharacter[enemNum].setTextureRect(sf::IntRect(100, 0, 100, 100));
+		animPlay = true;
+	}
+	void playGetDamage(int enemNum) {
+		teamCharacter[enemNum].setTextureRect(sf::IntRect(200, 0, 100, 100));
+		animPlay = true;
 	}
 	int onMouse(sf::RenderWindow& window) {
 		if (sf::IntRect(1100, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
