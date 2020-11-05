@@ -10,10 +10,6 @@ int main() {
 	sf::Sprite Escape;
 	Escape.setPosition(227, 300);
 	sf::Texture escTexture;
-	sf::Music beneathTheMask;
-	beneathTheMask.openFromFile("Asset/BeneathTheMask.ogg");
-	beneathTheMask.setLoop(true);
-	beneathTheMask.play();
 	escTexture.loadFromFile("Asset/Escape.png");
 	Escape.setTexture(escTexture);
 	int positionMenu = NULL;

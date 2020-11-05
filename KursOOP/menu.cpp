@@ -1,10 +1,15 @@
 #include "class.h"
+#include <SFML/Audio.hpp>
 
 int menu(sf::RenderWindow& window) {
 	Button startGame(1246, 600, 100, 20, "Start");
 	Button upgrade(1246, 642, 140, 20, "Upgrade");
 	Button exit(1246, 726, 80, 20, "Exit");
 	Button musicoff(1246, 684, 120, 20, "Music off");
+	sf::Music beneathTheMask;
+	beneathTheMask.openFromFile("Asset/BeneathTheMask.ogg");
+	beneathTheMask.setLoop(true);
+	beneathTheMask.play();
 	sf::Sprite background, cloud, logo;
 	cloud.setScale(0.5, 0.5);
 	sf::Texture backTexture, cloudTexture, logoTexture;
