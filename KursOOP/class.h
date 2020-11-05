@@ -328,10 +328,13 @@ public:
 	}
 	bool click(sf::RenderWindow& window) {
 		if (sf::IntRect(posX, posY, endX, endY).contains(sf::Mouse::getPosition(window))) {
+			buttonText.setFillColor(sf::Color(148, 148, 148));
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				return true;
 		}
-			return false;
+		else
+			buttonText.setFillColor(sf::Color(255, 255, 255));
+		return false;
 	}
 };
 class inventory {
