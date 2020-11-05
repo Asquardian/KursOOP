@@ -12,7 +12,7 @@ int main() {
 	sf::Texture escTexture;
 	sf::Music beneathTheMask;
 	int positionMenu = NULL;
-	bool musicPlay = true;
+	bool musicPlay = true, delay = false;
 	beneathTheMask.openFromFile("Asset/BeneathTheMask.ogg");
 	beneathTheMask.setLoop(true);
 	beneathTheMask.play();
@@ -20,17 +20,19 @@ int main() {
 	Escape.setTexture(escTexture);
 	while (positionMenu != 2) {
 		positionMenu = menu(window);
-		if (positionMenu == 3 && musicPlay == true) {
+		if (positionMenu == 3 && musicPlay == true && delay == false) {
 			beneathTheMask.stop();
 			musicPlay = false;
+			delay = true;
 		}
-		if (positionMenu == 3 && musicPlay == false) {
+		if (positionMenu == 3 && musicPlay == false && delay == false) {
 			beneathTheMask.play();
 			musicPlay = true;
+			delay = true;
 		}
 		if (positionMenu == 0) {
 			beneathTheMask.stop();
-			int idItem = fight(window);
+			int idItem = fight(window, musicPlay);
 			if (idItem != 10) {
 				beneathTheMask.play();
 				window.clear();
