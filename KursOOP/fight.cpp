@@ -38,10 +38,10 @@ int fight(sf::RenderWindow &window) {
 		window.draw(Background);
 		if (Player.step == true && Player.animPlay == false && Shadow.animPlay == false) {
 			if (characterNum == 3) {
-				characterNum = Player.onMouse(window);
+				characterNum = Player.onMouse(window, 200, -40);
 			}
 			if (enemyChoose == 3) {
-				enemyChoose = Shadow.onMouse(window);
+				enemyChoose = Shadow.onMouse(window, 1100, 40);
 			}
 			if (enemyChoose != 3 && characterNum != 3) {
 				Player.playPrepareToAttack(characterNum);
