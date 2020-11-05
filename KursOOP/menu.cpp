@@ -4,11 +4,14 @@ int menu(sf::RenderWindow& window) {
 	Button startGame(1246, 600, 100, 20, "Start");
 	Button upgrade(1246, 642, 140, 20, "Upgrade");
 	Button exit(1246, 684, 80, 20, "Exit");
-	sf::Sprite background, cloud;
+	sf::Sprite background, cloud, logo;
 	cloud.setScale(0.5, 0.5);
-	sf::Texture backTexture, cloudTexture;
+	sf::Texture backTexture, cloudTexture, logoTexture;
 	backTexture.loadFromFile("Asset/Menu.png");
 	cloudTexture.loadFromFile("Asset/cloud.png");
+	logoTexture.loadFromFile("Asset/logo.png");
+	logo.setTexture(logoTexture);
+	logo.setPosition(30, 30);
 	cloud.setTexture(cloudTexture);
 	float x = 0;
 	background.setTexture(backTexture);
@@ -32,6 +35,7 @@ int menu(sf::RenderWindow& window) {
 			return 2;
 		window.draw(background);
 		window.draw(cloud);
+		window.draw(logo);
 		startGame.draw(window);
 		upgrade.draw(window);
 		exit.draw(window);
