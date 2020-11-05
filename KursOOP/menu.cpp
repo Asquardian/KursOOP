@@ -3,8 +3,8 @@
 int menu(sf::RenderWindow& window) {
 	Button startGame(1246, 600, 100, 20, "Start");
 	Button upgrade(1246, 642, 140, 20, "Upgrade");
-	Button exit(1246, 684, 80, 20, "Exit");
-	Button music(1246, 726, 120, 20, "Music");
+	Button exit(1246, 726, 80, 20, "Exit");
+	Button music(1246, 684, 120, 20, "Music");
 	sf::Sprite background, cloud, logo;
 	cloud.setScale(0.5, 0.5);
 	sf::Texture backTexture, cloudTexture, logoTexture;
@@ -42,6 +42,7 @@ int menu(sf::RenderWindow& window) {
 		startGame.draw(window);
 		upgrade.draw(window);
 		exit.draw(window);
+		music.draw(window);
 		window.display();
 	}
 	return 2;

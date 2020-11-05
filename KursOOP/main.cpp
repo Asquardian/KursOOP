@@ -11,14 +11,23 @@ int main() {
 	Escape.setPosition(227, 300);
 	sf::Texture escTexture;
 	sf::Music beneathTheMask;
+	int positionMenu = NULL;
+	bool musicPlay = true;
 	beneathTheMask.openFromFile("Asset/BeneathTheMask.ogg");
 	beneathTheMask.setLoop(true);
 	beneathTheMask.play();
 	escTexture.loadFromFile("Asset/Escape.png");
 	Escape.setTexture(escTexture);
-	int positionMenu = NULL;
 	while (positionMenu != 2) {
 		positionMenu = menu(window);
+		if (positionMenu == 3 && musicPlay == true) {
+			beneathTheMask.stop();
+			musicPlay = false;
+		}
+		if (positionMenu == 3 && musicPlay == false) {
+			beneathTheMask.play();
+			musicPlay = true;
+		}
 		if (positionMenu == 0) {
 			beneathTheMask.stop();
 			int idItem = fight(window);

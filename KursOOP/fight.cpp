@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "class.h"
 
-int fight(sf::RenderWindow &window) {
+int fight(sf::RenderWindow &window, bool musicPlay) {
 	int healthEnemy[3];
 	team Player;
 	for (int i = 0; i < 3; i++)
@@ -16,8 +16,10 @@ int fight(sf::RenderWindow &window) {
 	sf::Sound hit;
 	hit.setBuffer(buffer);
 	battleTheme.openFromFile("Asset/MassDestruction.ogg");
-	battleTheme.setLoop(true);
-	battleTheme.play();
+	if (musicPlay == true) {
+		battleTheme.setLoop(true);
+		battleTheme.play();
+	}
 	sf::Sprite Background;
 	sf::Texture BackgroundTexture;
 	BackgroundTexture.loadFromFile("Asset/Background.png");
