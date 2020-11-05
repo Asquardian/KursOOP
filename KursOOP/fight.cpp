@@ -13,8 +13,9 @@ int fight(sf::RenderWindow &window) {
 	sf::Music battleTheme;
 	sf::SoundBuffer buffer;
 	buffer.loadFromFile("Asset/videoplayback.ogg");
-	sf::Sound hit;
-	hit.setBuffer(buffer);
+	sf::SoundBuffer hitbuffer;
+	hitbuffer.loadFromFile("Asset/hit.ogg");
+	sf::Sound hit(hitbuffer);
 	battleTheme.openFromFile("Asset/MassDestruction.ogg");
 	battleTheme.setLoop(true);
 	battleTheme.play();
@@ -47,7 +48,7 @@ int fight(sf::RenderWindow &window) {
 				Player.playPrepareToAttack(characterNum);
 				skill = Player.chooseSkill(characterNum, window);
 				if(skill == 1)
-					hit.play();
+					sf::Sound hit(hitbuffer);
 				shadowBefore = Shadow.health[enemyChoose];
 				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
 			}
