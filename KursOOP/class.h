@@ -24,6 +24,21 @@ public:
 			return false;
 		return true;
 	}
+	int onMouse(sf::RenderWindow& window, float X, float forMid) {
+		if (sf::IntRect(X, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 0; //1100 enem and 200
+		}
+		if (sf::IntRect(X - forMid, 464, 100, 100).contains(sf::Mouse::getPosition(window)) && health[1] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 1;
+		}
+		if (sf::IntRect(X, 600, 100, 100).contains(sf::Mouse::getPosition(window)) && health[2] > 0) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				return 2;
+		}
+		return 3;
+	}
 	sf::Sprite teamCharacter[3];
 	sf::Texture character;
 };
@@ -82,21 +97,6 @@ public:
 		spirit[characterNum] = spirit[characterNum] - 10;
 		return skill;
 	}
-	int onMouse(sf::RenderWindow& window) {
-		if (sf::IntRect(200, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] >= 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 0;
-		}
-		if (sf::IntRect(240, 462, 100, 100).contains(sf::Mouse::getPosition(window)) && health[1] >= 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 1;
-		}
-		if (sf::IntRect(200, 600, 100, 100).contains(sf::Mouse::getPosition(window)) && health[2] >= 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 2;
-		}
-		return 3;
-	}
 	int chooseSkill(int characterNum, sf::RenderWindow &window) {
 		int characterEffect = 3;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && spirit[characterNum] - 10 > 0) {
@@ -115,7 +115,7 @@ public:
 			case 1:
 				spirit[characterNum] -= 5;
 				while (characterEffect == 3) {
-					characterEffect = onMouse(window);
+					characterEffect = onMouse(window, 200, -40);
 				}
 				health[characterEffect] += 45;
 				power[1] += 5;
@@ -261,21 +261,6 @@ public:
 	void playGetDamage(int enemNum) {
 		teamCharacter[enemNum].setTextureRect(sf::IntRect(200, 0, 100, 100));
 		animPlay = true;
-	}
-	int onMouse(sf::RenderWindow& window) {
-		if (sf::IntRect(1100, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 0;
-		}
-		if (sf::IntRect(1060, 464, 100, 100).contains(sf::Mouse::getPosition(window)) && health[1] > 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 1;
-		}
-		if (sf::IntRect(1100, 600, 100, 100).contains(sf::Mouse::getPosition(window)) && health[2] > 0) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				return 2;
-		}
-		return 3;
 	}
 	void setFont() {
 		font.loadFromFile("Asset/FontC.TTF");

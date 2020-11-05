@@ -25,8 +25,8 @@ int upgradeMenu(sf::RenderWindow& window) {
 		}
 	PlayersInventory.set();
 		window.clear();
-		if (Player.onMouse(window) != 3)
-			charNum = Player.onMouse(window);
+		if (Player.onMouse(window, 200, -40) != 3)
+			charNum = Player.onMouse(window, 200, -40);
 		if (itemLife.click(window) == true && charNum != 3 && PlayersInventory.id[0] > 0 && delay == false) {
 			Player.health[charNum] += 10;
 			PlayersInventory.id[0] -= 1;
