@@ -8,5 +8,9 @@ int main() {
 	int idItem = fight(window);
 	if (idItem != 10)
 		Inventory.get(idItem);
+	if (idItem == 10) {
+		window.draw(Escape);
+		window.display();
+	}
 	upgradeMenu(window);
 }
