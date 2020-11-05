@@ -343,6 +343,7 @@ private:
 	std::string nameId[3]{};
 	sf::Text item[3]{};
 	sf::Font font;
+	sf::Text win;
 public:
 	int id[3]{};
 	inventory() {
@@ -358,8 +359,13 @@ public:
 		nameId[2] = "Spirit";
 		x = 520, y = 200;
 	}
-	void get(int num) {
+	void get(sf::RenderWindow& window, int num) {
 		id[num] = id[num] + 1;
+		win.setCharacterSize(30);
+		win.setFont(font);
+		win.setPosition(380, 384);
+		win.setString("You've got Essension of " + nameId[num]);
+		window.draw(win);
 		std::ofstream inv("Save/inventory.save");
 		for (int i = 0; i < 3; i++) {
 			inv << id[i] << " ";
