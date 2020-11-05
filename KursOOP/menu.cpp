@@ -4,6 +4,10 @@ int menu(sf::RenderWindow& window) {
 	Button startGame(1246, 600, 100, 20, "Start");
 	Button upgrade(1246, 642, 140, 20, "Upgrade");
 	Button exit(1246, 684, 80, 20, "Exit");
+	sf::Sprite background;
+	sf::Texture backTexture;
+	backTexture.loadFromFile("Asset/Menu.png");
+	background.setTexture(backTexture);
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -18,6 +22,7 @@ int menu(sf::RenderWindow& window) {
 			return 1;
 		if (exit.click(window) == true) 
 			return 2;
+		window.draw(background);
 		startGame.draw(window);
 		upgrade.draw(window);
 		exit.draw(window);
