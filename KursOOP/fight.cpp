@@ -14,6 +14,7 @@ int fight(sf::RenderWindow &window) {
 	sf::SoundBuffer buffer;
 	buffer.loadFromFile("Asset/videoplayback.ogg");
 	sf::SoundBuffer hitbuffer;
+	sf::Sound special(buffer);
 	hitbuffer.loadFromFile("Asset/hit.ogg");
 	sf::Sound hit(hitbuffer);
 	battleTheme.openFromFile("Asset/MassDestruction.ogg");
@@ -28,7 +29,7 @@ int fight(sf::RenderWindow &window) {
 	sf::Text turn("Your turn!", Player.font, 20);
 	turn.setPosition(200, 200);
 	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
-	int skill = 0, frame = 0, shadowBefore;
+	int skill = 0, frame = 0;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -47,9 +48,10 @@ int fight(sf::RenderWindow &window) {
 			if (enemyChoose != 3 && characterNum != 3) {
 				Player.playPrepareToAttack(characterNum);
 				skill = Player.chooseSkill(characterNum, window);
-				if(skill == 1)
-					sf::Sound hit(hitbuffer);
-				shadowBefore = Shadow.health[enemyChoose];
+				if (skill == 1)
+					special.play();
+				if (skill > 2)
+					hit.play();
 				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
 			}
 			window.draw(turn);
@@ -58,7 +60,7 @@ int fight(sf::RenderWindow &window) {
 			if (skill > 0)
 				Shadow.playGetDamage(enemyChoose);
 			Player.playIdle();
-			while (Shadow.health[enemyToAttack] < 0) {
+			while (Shadow.health[enemyToAttack] <= 0) {
 				enemyToAttack++;
 				if (enemyToAttack > 2)
 					enemyToAttack = 0;

@@ -11,13 +11,13 @@ public:
 	bool animPlay = NULL;
 	void draw(sf::RenderWindow& window) {
 		for (int i = 0; i < 3; i++)
-			if (health[i] >= 0)
+			if (health[i] > 0)
 				window.draw(teamCharacter[i]);
 	}
 	bool alive() {
 		int j = 0;
 		for (int i = 0; i < 3; i++) {
-			if (health[i] < 0)
+			if (health[i] <= 0)
 				j++;
 		}
 		if (j == 3)
@@ -85,7 +85,7 @@ public:
 	}
 	void drawBuff(sf::RenderWindow &window) {
 		for (int i = 0; i < 3; i++) {
-			if (isBuffed[i] == 1 && health[i] >= 0)
+			if (isBuffed[i] == 1 && health[i] > 0)
 				window.draw(buff[i]);
 		}
 	}
@@ -241,7 +241,7 @@ public:
 			return 5;
 		}
 		for (i = 0; i < 3; i++) {
-			if (healthPlayer[i] <= minHealth && healthPlayer[i] >= 0) {
+			if (healthPlayer[i] <= minHealth && healthPlayer[i] > 0) {
 				minHealth = healthPlayer[i];
 				charToAttack = i;
 			}
