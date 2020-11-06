@@ -67,7 +67,6 @@ public:
 		buffTexture.loadFromFile("Asset/Effect.png");
 		for (int i = 0; i < 3; i++) {
 			buff[i].setTexture(buffTexture);
-			buff[i].setScale(2, 2);
 		}
 		buff[0].setPosition(150, 392);
 		buff[1].setPosition(190, 484);

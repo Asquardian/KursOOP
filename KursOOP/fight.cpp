@@ -26,8 +26,6 @@ int fight(sf::RenderWindow &window) {
 	Background.setTexture(BackgroundTexture);
 	Player.setFont();
 	Shadow.setFont();
-	sf::Text turn("Your turn!", Player.font, 20);
-	turn.setPosition(200, 200);
 	int characterNum = 3, enemyChoose = 3, charAttack, enemyToAttack = 0;
 	int skill = 0, frame = 0;
 	while (window.isOpen()) {
@@ -54,7 +52,6 @@ int fight(sf::RenderWindow &window) {
 					hit.play();
 				Shadow.health[enemyChoose] = Shadow.health[enemyChoose] - skill;
 			}
-			window.draw(turn);
 		}
 		if (Player.step == false && Player.animPlay == false && Shadow.animPlay == false && Shadow.alive() == true) {
 			if (skill > 0)
