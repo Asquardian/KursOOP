@@ -84,11 +84,11 @@ int fight(sf::RenderWindow &window) {
 			Player.playIdle();
 			Shadow.playIdle();
 		}
-		if (Player.alive() == false) {
-			return 10;
-		}
 		if (Shadow.alive() == false) {
 			return rand() % 3;
+		}
+		if (Player.alive() == false) {
+			return 10;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			return 10;

@@ -5,6 +5,8 @@
 #include <fstream>
 
 class obj {
+private:
+	sf::Text hp[3]{};
 public:
 	sf::Font font;
 	int health[3]{};
@@ -23,6 +25,28 @@ public:
 		if (j == 3)
 			return false;
 		return true;
+	}
+	void setFont() {
+		font.loadFromFile("Asset/FontC.TTF");
+		hp[0].setPosition(1200, 370);
+		hp[1].setPosition(1160, 462);
+		hp[2].setPosition(1200, 598);
+		for (int i = 0; i < 3; i++) {
+			hp[i].setFont(font);
+			hp[i].setCharacterSize(20);
+		}
+	}
+	void stat(sf::RenderWindow& window) {
+		std::ostringstream hpString[3];
+		for (int i = 0; i < 3; i++) {
+			hpString[i] << health[i];
+		}
+		for (int i = 0; i < 3; i++) {
+			if (health[i] > 0) {
+				hp[i].setString("HP: " + hpString[i].str());
+				window.draw(hp[i]);
+			}
+		}
 	}
 	int onMouse(sf::RenderWindow& window, float X, float forMid) {
 		if (sf::IntRect(X, 372, 100, 100).contains(sf::Mouse::getPosition(window)) && health[0] > 0) {
@@ -47,17 +71,16 @@ private:
 	sf::Sprite buff[3]{};
 	sf::Texture buffTexture;
 	int isBuffed[3]{};
+	sf::Text hp[3]{}, sp[3]{}, pw[3]{}, minpw[3]{};
 public:
 	int power[3]{};
 	int minPower[3]{};
 	int spirit[3]{};
 	bool step = NULL;
-	sf::Text hp[3]{}, sp[3]{}, pw[3]{}, minpw[3]{};
-	team() {	
+	team() : step(false) {
+		animPlay = false;
 		std::ifstream savedTeam("Save/TeamStat.save");
 		for (int i = 0; i <= 2; i++) {
-			animPlay = false;
-			step = true;
 			savedTeam >> health[i];
 			savedTeam >> spirit[i];
 			savedTeam >> power[i];
@@ -212,10 +235,9 @@ private:
 	sf::Text hp[3]{};
 public:
 	int healTime;
-	enemy(int* healthSet) {
+	enemy(int* healthSet): healTime(0) {
 		character.loadFromFile("Asset/Shadow.png");
 		animPlay = false;
-		healTime = 0;
 		teamCharacter[0].setPosition(1100, 372);
 		teamCharacter[1].setPosition(1060, 464);
 		teamCharacter[2].setPosition(1100, 600);
@@ -260,28 +282,6 @@ public:
 	void playGetDamage(int enemNum) {
 		teamCharacter[enemNum].setTextureRect(sf::IntRect(200, 0, 100, 100));
 		animPlay = true;
-	}
-	void setFont() {
-		font.loadFromFile("Asset/FontC.TTF");
-		hp[0].setPosition(1200, 370);
-		hp[1].setPosition(1160, 462);
-		hp[2].setPosition(1200, 598);
-		for (int i = 0; i < 3; i++) {
-			hp[i].setFont(font);
-			hp[i].setCharacterSize(20);
-		}
-	}
-	void stat(sf::RenderWindow& window) {
-		std::ostringstream hpString[3];
-		for (int i = 0; i < 3; i++) {
-			hpString[i] << health[i];
-		}
-		for (int i = 0; i < 3; i++) {
-			if (health[i] > 0) {
-				hp[i].setString("HP: "+ hpString[i].str());
-				window.draw(hp[i]);
-			}
-		}
 	}
 };
 class Button {
@@ -330,7 +330,7 @@ private:
 	sf::Text win;
 public:
 	int id[3]{};
-	inventory() {
+	inventory(): x(520), y(200) {
 		std::ifstream savedInventory("Save/inventory.save");
 		font.loadFromFile("Asset/FontC.TTF");
 		for (int i = 0; i < 3; i++) {
@@ -341,7 +341,6 @@ public:
 		nameId[0] = "Life";
 		nameId[1] = "Power";
 		nameId[2] = "Spirit";
-		x = 520, y = 200;
 	}
 	void get(sf::RenderWindow& window, int num) {
 		id[num] = id[num] + 1;
